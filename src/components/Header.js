@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from 'semantic-ui-react'
 
 const Header = () => {
     return (
@@ -7,9 +8,12 @@ const Header = () => {
         <Link to="/" className="item">
             Strona Glowna
         </Link>
+        <Link to="/tablerecord" className="item">
+            Tabela
+        </Link>
         <div className="right menu">
-            <Link to="/pagetwo" className="item">
-                Wszystkie strony
+            <Link to="/loginform" className="item">
+                Zaloguj
             </Link>
         </div>
         </div>

@@ -5,6 +5,8 @@ import RecordList from './RecordList';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import Header from './Header';
 import StreamList from '../streams/StreamList';
+import LoginForm from './LoginForm';
+import TableRecords from './TableRecords';
 
 const PageTwo = () => {
     return (
@@ -41,6 +43,8 @@ class App extends React.Component {
         <Route path="/StreamList" exact compnent={StreamList} />
         <Route path="/pagetwo" component={PageTwo} />
         <Route path="/pagethree" component={PageThree} />
+        <Route path="/loginform" component={LoginForm} />
+        <Route path="/tablerecord" component={TableRecords} />
         </div>
         </BrowserRouter> 
     </div>
