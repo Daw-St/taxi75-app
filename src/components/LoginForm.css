@@ -1,0 +1,12 @@
+body > div,
+body > div > div,
+body > div > div > div.login-form {
+  height: 100%;
+}
+.column {
+    max-width: 450px;
+}
+
+.grid-area {
+    height: '100%';
+}
