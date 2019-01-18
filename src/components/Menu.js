@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react';
 import './Menu.css';
 const Header = () => {
     return (
@@ -11,10 +11,10 @@ const Header = () => {
             <Link to="/seniors" className="item">
                 <Button color='yellow'>Seniorzy</Button>
             </Link>
-            <Link to="" className="item">
+            <Link to="/rides" className="item">
                 <Button color='yellow'>Przejazdy</Button>
             </Link>
-            <Link to="" className="item">
+            <Link to="/logs" className="item">
                 <Button color='yellow'>Logi</Button>
             </Link>
         <div className="right menu">
