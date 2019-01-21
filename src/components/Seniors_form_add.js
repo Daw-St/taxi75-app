@@ -32,8 +32,9 @@ class FormExampleClearOnSubmit extends Component {
       <div>
         <Form onSubmit={this.handleSubmit}>
           <Form.Group>
-            <Form.Input placeholder='00000000K' name='card_id' value={card_id} onChange={this.handleChange} />
+            <Form.Input label="ID Karty" placeholder='00000000K' name='card_id' value={card_id} onChange={this.handleChange} />
             <Form.Input
+              label="Data Urodzenia"
               placeholder='1900'
               name='birth_year'
               value={birth_year}
@@ -49,13 +50,9 @@ class FormExampleClearOnSubmit extends Component {
             label='Numer Telefonu' 
             placeholder='111 222 333' 
             name='phone_number' value={phone_number} onChange={this.handleChange} />
-            <Form.Button content='Submit' />
+            <Form.Button label="Potwierdż" content='Dodaj' />
           </Form.Group>
         </Form>
-        <strong>onChange:</strong>
-        <pre>{JSON.stringify({ card_id, birth_year, phone_number, sex }, null, 2)}</pre>
-        <strong>onSubmit:</strong>
-        <pre>{JSON.stringify({ card_id, birth_year, phone_number, sex }, null, 2)}</pre>
       </div>
     )
   }
