@@ -5,7 +5,7 @@ import TableSeniors from '../components/Seniors_Table';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { Button, Popup } from 'semantic-ui-react';
 import SeniorPopup from '../components/Seniors_Popup_add';
-
+import './Seniors.css';
 class Seniors extends React.Component {
     state = { records: [] };
     
@@ -26,7 +26,7 @@ class Seniors extends React.Component {
     <div className="ui container" style={{marginTop: '10px'}}>
         <SearchBar onSubmit={this.onSearchSubmit}/>
         <Button onClick={this.showAll} color='yellow'>Pokaż wszystkie</Button>
-        <SeniorPopup/>
+        <SeniorPopup className="button"/>
         <TableSeniors records={ this.state.records }/>
         Liczba wyników: { this.state.records.length }.
     </div>
