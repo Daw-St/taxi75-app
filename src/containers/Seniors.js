@@ -3,7 +3,7 @@ import api from '../api/api';
 import SearchBar from '../components/SearchBar';
 import TableSeniors from '../components/Seniors_Table';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
-import { Button, Popup } from 'semantic-ui-react';
+import { Button, Popup, Grid, Segment } from 'semantic-ui-react';
 import SeniorPopup from '../components/Seniors_Popup_add';
 import './Seniors.css';
 class Seniors extends React.Component {
@@ -25,8 +25,14 @@ class Seniors extends React.Component {
     <div>
     <div className="ui container" style={{marginTop: '10px'}}>
         <SearchBar onSubmit={this.onSearchSubmit}/>
-        <Button onClick={this.showAll} color='yellow'>Pokaż wszystkie</Button>
-        <SeniorPopup className="button"/>
+        <Grid columns='equal'columns={4}>
+        <Grid.Column>
+            <Button onClick={this.showAll} color='yellow'>Pokaż wszystkie</Button>
+        </Grid.Column>
+        <Grid.Column>
+            <SeniorPopup className="button"/>
+        </Grid.Column>
+      </Grid>
         <TableSeniors records={ this.state.records }/>
         Liczba wyników: { this.state.records.length }.
     </div>
