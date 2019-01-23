@@ -10,13 +10,14 @@ class RecordRow extends React.Component {
         } else {
             showSex = 'Kobieta';
         }
+        console.log(creation_date)
         return (
             <Table.Row>
                 <Table.Cell>{card_id}</Table.Cell>
                 <Table.Cell>{showSex}</Table.Cell>
                 <Table.Cell>{birth_year}</Table.Cell>
                 <Table.Cell>{phone_number}</Table.Cell>
-                <Table.Cell><Moment format="YYYY/MM/MM">{creation_date}</Moment></Table.Cell>
+                <Table.Cell><Moment format="YYYY/MM/DD">{creation_date}</Moment></Table.Cell>
             </Table.Row>
         );
     }

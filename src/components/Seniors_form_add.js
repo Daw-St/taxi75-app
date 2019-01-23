@@ -7,6 +7,7 @@ class FormExampleClearOnSubmit extends Component {
     super(props)
     this.state = { card_id: '', birth_year: '', sex: '', phone_number: '', result:'' }
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.failure = this.failure.bind(this);
   }
 
   handleChange = (e, { value }) => this.setState({ sex: value });
@@ -38,6 +39,8 @@ class FormExampleClearOnSubmit extends Component {
     this.setState({ card_id: card_id, birth_year: birth_year, 
       sex: sex, phone_number: phone_number })
 
+    var self = this;
+
     api.post(`/senior/add`, {
       'card_id': this.state.card_id,
       'sex': this.state.sex,
@@ -45,24 +48,27 @@ class FormExampleClearOnSubmit extends Component {
       'phone_number': this.state.phone_number
     }).then(function(response) {
       console.log(response);
-      this.success();
+      self.setState({result: 'success'})
     }).catch(function (error) {
       console.log(error.response);
-      this.failure();
+      self.setState({result: 'failure'})
     });
   }
 
   showMessage = () => {
     if(this.state.result == 'success') {
       return(
-        <Message success header='Form Completed' content="You're all signed up for the newsletter" />
+        <Message success header='Senior dodany pomyślnie!' content="Senior został zapisany w bazie, możesz teraz dodać do niego przejazdy lub dodać kolejnego seniora." />
       )
     } else if(this.state.result == 'failure') {
       return(
-        <Message error header='Action Forbidden' content='You can only sign up for an account once with a given e-mail address.'/>)
+        <Message error header='Wystąpił problem!' content='W jednym z pól znajduje się problem.'/>)
     } else {
       return(
-        <Message warning header='Could you check something!' list={['That e-mail has been subscribed, but you have not yet clicked the verification link in your e-mail.',]}/>)
+        <Message warning header='Wypełnij wszystkie pola!' 
+        list={['Wypełnij wszystkie powyższe pola, następnie kliknij przycisk "Dodaj".',
+        'Po pomyślnym dodaniu seniora do bazy, powjawi się informacja o sukcesie.',
+        'Po jej wystąpieniu możesz oddać kolejnego seniora lub zamknąć formularz.',]}/>)
     }
   }
 
