@@ -1,6 +1,6 @@
 import React from 'react';
 import api from '../api/api';
-import SearchBar from '../components/SearchBar';
+import SearchBar from '../components/Seniors_SearchBar';
 import TableSeniors from '../components/Seniors_Table';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { Button, Popup, Grid, Segment } from 'semantic-ui-react';
