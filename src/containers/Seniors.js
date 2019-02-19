@@ -9,8 +9,8 @@ import './Seniors.css';
 class Seniors extends React.Component {
     state = { records: [] };
     
-    onSearchSubmit = async term => {
-
+    onSearchSubmit = async ({term, year}) => {
+        console.log(term + 'poaz temrs')
         const response = await api.get(`/seniors/fill/${term}`)
         console.log(response.data.data)
        this.setState({ records: response.data.data });
