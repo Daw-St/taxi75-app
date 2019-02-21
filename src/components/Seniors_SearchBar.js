@@ -1,25 +1,16 @@
 import React from 'react';
 import DatePicker from "react-datepicker";
 import { Accordion, Icon, Form, Input, TextArea, Button, Checkbox, Select, Dropdown} from 'semantic-ui-react';
+import { observer, inject } from 'mobx-react';
+import { action } from 'mobx';
 import "react-datepicker/dist/react-datepicker.css";
 
+@inject('Store')
+@observer
 class SearchBar extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            term: '',
-            year: '',
-            number: '',
-            gender: '',
-            block: '',
-            is_asc_cdate: false,
-            is_desc_cdate: false,
-            is_asc_cId: false,
-            is_desc_cId: false,
-            is_asc_byr: false,
-            is_desc_byr: false,
-            startDate: new Date(2000,10,20),
-            endDate: new Date(2100,10,20),
             activeIndex: 0
         };
         this.handleChangeStart = this.handleChangeStart.bind(this);
@@ -34,13 +25,15 @@ class SearchBar extends React.Component {
         console.log(this.state)
         this.props.onSubmit({id_karty: this.state.term, year: this.state.year});
       }
-
+    @action
     handleChangeStart(date) {
-        this.setState({startDate: date})
+        //this.setState({startDate: date})
+        this.props.Store.startDate = date;
     }
-
+    @action
     handleChangeEnd(date) {
-        this.setState({endDate: date})
+        //this.setState({endDate: date})
+        this.props.Store.endDate = date;
     }
 
     onFormSubmit = event => {
@@ -51,7 +44,8 @@ class SearchBar extends React.Component {
 
     onFormClick = event => {
         event.preventDefault();
-        console.log(this.state)
+        console.log(this.state);
+        console.log(this.props.Store);
         this.props.onClick(this.state);
     }
 
@@ -62,35 +56,64 @@ class SearchBar extends React.Component {
     
         this.setState({ activeIndex: newIndex })
       }
-
+    @action
     toggleChange_is_asc_cdate = () => {
-        this.setState(prevState => ({is_asc_cdate: !prevState.is_asc_cdate }))
+        //this.setState(prevState => ({is_asc_cdate: !prevState.is_asc_cdate }))
+        const value = this.props.Store.is_asc_cdate;
+        this.props.Store.is_asc_cdate = !value
     }
+    @action
     toggleChange_is_desc_cdate = () => {
-        this.setState(prevState => ({is_desc_cdate: !prevState.is_desc_cdate }))
+        //this.setState(prevState => ({is_desc_cdate: !prevState.is_desc_cdate }))
+        const value = this.props.Store.is_desc_cdate;
+        this.props.Store.is_desc_cdate = !value;
     }
+    @action
     toggleChange_is_asc_cId = () => {
-        this.setState(prevState => ({is_asc_cId: !prevState.is_asc_cId }))
+        //this.setState(prevState => ({is_asc_cId: !prevState.is_asc_cId }))
+        const value = this.props.Store.is_asc_cId;
+        this.props.Store.is_asc_cdate = !value;
     }
+    @action
     toggleChange_is_desc_cId = () => {
-        this.setState(prevState => ({is_desc_cId: !prevState.is_desc_cId }))
+        //this.setState(prevState => ({is_desc_cId: !prevState.is_desc_cId }))
+        const value = this.props.Store.is_desc_cId;
+        this.props.Store.is_desc_cId = !value;
     }
+    @action
     toggleChange_is_asc_byr = () => {
-        this.setState(prevState => ({is_asc_byr: !prevState.is_asc_byr }))
+        //this.setState(prevState => ({is_asc_byr: !prevState.is_asc_byr }))
+        const value = this.props.Store.is_asc_byr;
+        this.props.Store.is_asc_byr = !value;
     }
+    @action
     toggleChange_is_desc_byr = () => {
-        this.setState(prevState => ({is_desc_byr: !prevState.is_desc_byr }))
-    }
+        //this.setState(prevState => ({is_desc_byr: !prevState.is_desc_byr }))
+        const value = this.props.Store.is_desc_byr;
+        this.props.Store.is_desc_byr = !value;
 
+    }
+    @action
     handleGenderChange = (selectedOption) => {
-        this.setState({gender: selectedOption})
+        //this.setState({gender: selectedOption})
+        this.props.Store.gender = selectedOption;
     }
-
+    @action
     handleBlockChange = (event) => {
-        this.setState({block: event.target.value })
+        //this.setState({block: event.target.value })
+        this.props.Store.block = event.target.value;
     }
 
-    handleSelectChange = (e, { name, value }) => this.setState({ [name]: value })
+    handleSelectChange = (e, { name, value }) => { this.setState({ [name]: value })
+    }
+    @action
+    handleSelectChangeGender = (e, { name, value }) => {
+        this.props.Store.block = value;
+    }
+    @action
+    handleSelectChangeBlock = (e, { name, value }) => {
+        this.props.Store.gender = value;
+    }
 
     render() {
         const { activeIndex } = this.state
@@ -115,24 +138,24 @@ class SearchBar extends React.Component {
                     control={Input}
                     label='ID Karty:'
                     placeholder='00000000K'
-                    onChange={(e) => this.setState({ term: e.target.value })}
-                    value={this.state.term}
+                    onChange={(e) => { this.props.Store.term =  e.target.value }}
+                    value={this.props.Store.term}
                 />
                 <Form.Field
                     id='form-input-control-first-name'
                     control={Input}
                     label='Rok Urodzenia:'
                     placeholder='1901'
-                    onChange={(e) => this.setState({ year: e.target.value })}
-                    value={this.state.year}
+                    onChange={(e) => { this.props.Store.year =  e.target.value }}
+                    value={this.props.Store.year}
                 />
                 <Form.Field
                     id='form-input-control-first-name'
                     control={Input}
                     label='Numer Telefonu:'
                     placeholder='121121121'
-                    onChange={(e) => this.setState({ number: e.target.value })}
-                    value={this.state.number}
+                    onChange={(e) => { this.props.Store.number = e.target.value }}
+                    value={this.props.Store.number}
                 />
                 <Form.Field>
                     <label>Płeć:</label>
@@ -141,7 +164,7 @@ class SearchBar extends React.Component {
                         name='gender'
                         options={genderOptions}
                         placeholder='Wybierz'
-                        onChange={this.handleSelectChange}
+                        onChange={this.handleSelectChangeGender}
                 />
                 </Form.Field>
                 </Form.Group>
@@ -153,18 +176,18 @@ class SearchBar extends React.Component {
                     placeholder='2018/10/01'
                     >
                     <DatePicker 
-                        selected={this.state.startDate}
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
+                        selected={this.props.Store.startDate}
+                        startDate={this.props.Store.startDate}
+                        endDate={this.props.Store.endDate}
                         onChange={this.handleChangeStart}
-                        value={this.state.startDate}
+                        value={this.props.Store.startDate}
                 />
                     <DatePicker 
-                        selected={this.state.endDate}
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
+                        selected={this.props.Store.endDate}
+                        startDate={this.props.Store.startDate}
+                        endDate={this.props.Store.endDate}
                         onChange={this.handleChangeEnd}
-                        value={this.state.endDate}
+                        value={this.props.Store.endDate}
                 />
                 </Form.Field>
                 <Form.Field>
@@ -174,40 +197,40 @@ class SearchBar extends React.Component {
                         name='block'
                         options={blockOptions}
                         placeholder='Zablokowanych lub nie'
-                        onChange={this.handleSelectChange}
+                        onChange={this.handleSelectChangeBlock}
                 />
                 </Form.Field>
                 </Form.Group>
                 <Form.Group>
                 <Form.Field control={Checkbox} label={<label>Data utowrzenia rosnąco</label>} 
-                    checked={this.state.is_asc_cdate}
+                    checked={this.props.Store.is_asc_cdate}
                     onChange={this.toggleChange_is_asc_cdate}
-                    value={this.state.is_asc_cdate}
+                    value={this.props.Store.is_asc_cdate}
                 />
                 <Form.Field control={Checkbox} label={<label>Data utworzenia malejąco</label>} 
-                    checked={this.state.is_desc_cdate}
+                    checked={this.props.Store.is_desc_cdate}
                     onChange={this.toggleChange_is_desc_cdate}
-                    value={this.state.is_asc_cdate}
+                    value={this.props.Store.is_asc_cdate}
                 />
                 <Form.Field control={Checkbox} label={<label>ID Karty rosnąco</label>} 
-                    checked={this.state.is_asc_cId}
+                    checked={this.props.Store.is_asc_cId}
                     onChange={this.toggleChange_is_asc_cId}
-                    value={this.state.is_asc_cId}
+                    value={this.props.Store.is_asc_cId}
                 />
                 <Form.Field control={Checkbox} label={<label>ID Karty malejąco</label>} 
-                    checked={this.state.is_desc_cId}
+                    checked={this.props.Store.is_desc_cId}
                     onChange={this.toggleChange_is_desc_cId}
-                    valye={this.state.is_desc_cId}
+                    valye={this.props.Store.is_desc_cId}
                 />
                 <Form.Field control={Checkbox} label={<label>Data urodzenia rosnąco</label>} 
-                    checked={this.state.is_asc_byr}
+                    checked={this.props.Store.is_asc_byr}
                     onChange={this.toggleChange_is_asc_byr}
-                    value={this.state.is_asc_byr}
+                    value={this.props.Store.is_asc_byr}
                 />
                 <Form.Field control={Checkbox} label={<label>Data urdzenia malejąco</label>} 
-                    checked={this.state.is_desc_byr}
+                    checked={this.props.Store.is_desc_byr}
                     onChange={this.toggleChange_is_desc_byr}
-                    value={this.state.is_desc_byr}
+                    value={this.props.Store.is_desc_byr}
                 />
                 </Form.Group>
                 <Form.Button content='Wyszukaj' type='submit' />
