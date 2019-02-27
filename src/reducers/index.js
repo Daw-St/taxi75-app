@@ -111,5 +111,7 @@ export default (state = initialState, action) => {
             return Object.assign({}, action, {
                 seniorSearch_endDate: action.data
             })
+        default:
+            return state
     }
 }
