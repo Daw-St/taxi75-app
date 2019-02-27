@@ -1,18 +1,19 @@
 import React from 'react';
 import DatePicker from "react-datepicker";
 import { Accordion, Icon, Form, Input, TextArea, Button, Checkbox, Select, Dropdown} from 'semantic-ui-react';
-import { observer, inject } from 'mobx-react';
-import { action } from 'mobx';
+import { senior_search_card, senior_search_year, senior_search_number, senior_search_gender, senior_search_block, senior_search_is_asc_cdate_true, 
+    senior_search_is_asc_cdate_false, senior_search_is_desc_cdate_true, senior_search_is_desc_cdate_false, senior_search_is_asc_cId_true, 
+    senior_search_is_asc_cId_false, senior_search_is_desc_cId_true, senior_search_is_desc_cId_false, senior_search_is_asc_byr_true, 
+    senior_search_is_asc_byr_false, senior_search_is_desc_byr_true, senior_search_is_desc_byr_false, senior_search_startDate, senior_search_endDate } from '../actions';
 import "react-datepicker/dist/react-datepicker.css";
 
-@inject('Store')
-@observer
 class SearchBar extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             activeIndex: 0
         };
+        this.store = this.props.store;
         this.handleChangeStart = this.handleChangeStart.bind(this);
         this.handleChangeEnd = this.handleChangeEnd.bind(this);
         this.handleGenderChange = this.handleGenderChange.bind(this);
@@ -25,15 +26,17 @@ class SearchBar extends React.Component {
         console.log(this.state)
         this.props.onSubmit({id_karty: this.state.term, year: this.state.year});
       }
-    @action
+
     handleChangeStart(date) {
         //this.setState({startDate: date})
-        this.props.Store.startDate = date;
+        //this.props.Store.startDate = date;
+        this.store.dispatch(senior_search_startDate(date))
     }
-    @action
+  
     handleChangeEnd(date) {
         //this.setState({endDate: date})
-        this.props.Store.endDate = date;
+        //this.props.Store.endDate = date;
+        this.store.dispatch(senior_search_endDate(date))
     }
 
     onFormSubmit = event => {
@@ -56,49 +59,49 @@ class SearchBar extends React.Component {
     
         this.setState({ activeIndex: newIndex })
       }
-    @action
+ 
     toggleChange_is_asc_cdate = () => {
         //this.setState(prevState => ({is_asc_cdate: !prevState.is_asc_cdate }))
         const value = this.props.Store.is_asc_cdate;
         this.props.Store.is_asc_cdate = !value
     }
-    @action
+
     toggleChange_is_desc_cdate = () => {
         //this.setState(prevState => ({is_desc_cdate: !prevState.is_desc_cdate }))
         const value = this.props.Store.is_desc_cdate;
         this.props.Store.is_desc_cdate = !value;
     }
-    @action
+
     toggleChange_is_asc_cId = () => {
         //this.setState(prevState => ({is_asc_cId: !prevState.is_asc_cId }))
         const value = this.props.Store.is_asc_cId;
         this.props.Store.is_asc_cdate = !value;
     }
-    @action
+
     toggleChange_is_desc_cId = () => {
         //this.setState(prevState => ({is_desc_cId: !prevState.is_desc_cId }))
         const value = this.props.Store.is_desc_cId;
         this.props.Store.is_desc_cId = !value;
     }
-    @action
+
     toggleChange_is_asc_byr = () => {
         //this.setState(prevState => ({is_asc_byr: !prevState.is_asc_byr }))
         const value = this.props.Store.is_asc_byr;
         this.props.Store.is_asc_byr = !value;
     }
-    @action
+
     toggleChange_is_desc_byr = () => {
         //this.setState(prevState => ({is_desc_byr: !prevState.is_desc_byr }))
         const value = this.props.Store.is_desc_byr;
         this.props.Store.is_desc_byr = !value;
 
     }
-    @action
+
     handleGenderChange = (selectedOption) => {
         //this.setState({gender: selectedOption})
         this.props.Store.gender = selectedOption;
     }
-    @action
+
     handleBlockChange = (event) => {
         //this.setState({block: event.target.value })
         this.props.Store.block = event.target.value;
@@ -106,13 +109,15 @@ class SearchBar extends React.Component {
 
     handleSelectChange = (e, { name, value }) => { this.setState({ [name]: value })
     }
-    @action
+
     handleSelectChangeGender = (e, { name, value }) => {
-        this.props.Store.block = value;
+        //this.props.Store.gender = value;
+        this.store.dispatch(senior_search_gender(value))
     }
-    @action
+
     handleSelectChangeBlock = (e, { name, value }) => {
-        this.props.Store.gender = value;
+        //this.props.Store.gender = value;
+        this.store.dispatch(senior_search_block(value))
     }
 
     render() {
@@ -138,24 +143,24 @@ class SearchBar extends React.Component {
                     control={Input}
                     label='ID Karty:'
                     placeholder='00000000K'
-                    onChange={(e) => { this.props.Store.term =  e.target.value }}
-                    value={this.props.Store.term}
+                    onChange={(e) => { this.store.dispatch(senior_search_card(e.target.value)) }}
+                    value={this.store.getState().seniorSearch_term}
                 />
                 <Form.Field
                     id='form-input-control-first-name'
                     control={Input}
                     label='Rok Urodzenia:'
                     placeholder='1901'
-                    onChange={(e) => { this.props.Store.year =  e.target.value }}
-                    value={this.props.Store.year}
+                    onChange={(e) => { this.store.dispatch(senior_search_year(e.target.value)) }}
+                    value={this.store.getState().seniorSearch_year}
                 />
                 <Form.Field
                     id='form-input-control-first-name'
                     control={Input}
                     label='Numer Telefonu:'
                     placeholder='121121121'
-                    onChange={(e) => { this.props.Store.number = e.target.value }}
-                    value={this.props.Store.number}
+                    onChange={(e) => { this.store.disatch(senior_search_number(e.target.value)) }}
+                    value={this.store.getState().seniorSearch_number}
                 />
                 <Form.Field>
                     <label>Płeć:</label>
@@ -176,18 +181,18 @@ class SearchBar extends React.Component {
                     placeholder='2018/10/01'
                     >
                     <DatePicker 
-                        selected={this.props.Store.startDate}
-                        startDate={this.props.Store.startDate}
-                        endDate={this.props.Store.endDate}
+                        selected={this.store.getState().seniorSearch_startDate}
+                        startDate={this.store.getState().seniorSearch_startDate}
+                        endDate={this.store.getState().seniorSearch_endDate}
                         onChange={this.handleChangeStart}
-                        value={this.props.Store.startDate}
+                        value={this.store.getState().seniorSearch_startDate}
                 />
                     <DatePicker 
-                        selected={this.props.Store.endDate}
-                        startDate={this.props.Store.startDate}
-                        endDate={this.props.Store.endDate}
+                        selected={this.store.getState().seniorSearch_endDate}
+                        startDate={this.store.getState().seniorSearch_startDate}
+                        endDate={this.store.getState().seniorSearch_endDate}
                         onChange={this.handleChangeEnd}
-                        value={this.props.Store.endDate}
+                        value={this.store.getState().seniorSearch_endDate}
                 />
                 </Form.Field>
                 <Form.Field>

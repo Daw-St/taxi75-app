@@ -5,11 +5,8 @@ import TableSeniors from '../components/Seniors_Table';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { Button, Popup, Grid, Segment } from 'semantic-ui-react';
 import SeniorPopup from '../components/Seniors_Popup_add';
-import { observer, inject } from 'mobx-react';
 import './Seniors.css';
 
-@inject('Store')
-@observer
 class Seniors extends React.Component {
     state = { records: [] };
     

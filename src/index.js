@@ -6,8 +6,10 @@ import myApp from './reducers';
 
 let store = createStore(myApp);
 
-ReactDOM.render(<App />, document.querySelector('#root'));
+function render() {
+ReactDOM.render(<App store={store}/>, document.querySelector('#root'));
+}
 
-store.subscribe(ReactDOM.render);
+store.subscribe(render);
 
-ReactDOM.render();
+render();

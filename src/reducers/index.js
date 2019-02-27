@@ -63,7 +63,7 @@ export default (state = initialState, action) => {
             })
         case 'SENIOR_SEARCH_IS_ASC_CID_TRUE':
             console.log('wybrales medote szukaj po roznacem id karty true')
-            return Object.assign({}, aciton, {
+            return Object.assign({}, action, {
                 seniorSearch_is_asc_cId: true
             })
         case 'SENIOR_SEARCH_IS_ASC_CID_FALSE':
@@ -88,7 +88,7 @@ export default (state = initialState, action) => {
             })
         case 'SENIOR_SEARCH_IS_ASC_BYR_FALSE':
             console.log('wybrales metode szyk aj po dacie urdzneia rosnaca false')
-            return Object.assign({}, aciton, {
+            return Object.assign({}, action, {
                 seniorSearch_is_asc_byr: false
             })
         case 'SENIOR_SEARCH_IS_DESC_BYR_TRUE':
