@@ -11,7 +11,13 @@ class SearchBar extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            activeIndex: 0
+            activeIndex: 0,
+            is_asc_cdate: false,
+            is_desc_cdate: false,
+            is_asc_cId: false,
+            is_desc_cId: false,
+            is_asc_byr: false,
+            is_desc_byr: false
         };
         this.store = this.props.store;
         this.handleChangeStart = this.handleChangeStart.bind(this);
@@ -61,39 +67,52 @@ class SearchBar extends React.Component {
       }
  
     toggleChange_is_asc_cdate = () => {
-        //this.setState(prevState => ({is_asc_cdate: !prevState.is_asc_cdate }))
-        const value = this.props.Store.is_asc_cdate;
-        this.props.Store.is_asc_cdate = !value
+        this.setState(prevState => ({is_asc_cdate: !prevState.is_asc_cdate }, () => {
+            const value = this.state.is_asc_cdate;
+            value ? this.store.dispatch(senior_search_is_asc_cdate_true):this.store.dispatch(senior_search_is_asc_cdate_false);
+        }))
+
+
     }
 
     toggleChange_is_desc_cdate = () => {
-        //this.setState(prevState => ({is_desc_cdate: !prevState.is_desc_cdate }))
-        const value = this.props.Store.is_desc_cdate;
-        this.props.Store.is_desc_cdate = !value;
+        this.setState(prevState => ({is_desc_cdate: !prevState.is_desc_cdate }, () => {
+            const value = this.state.is_desc_cdate;
+            value ? this.store.dispatch(senior_search_is_desc_cdate_true):this.store.dispatch(senior_search_is_desc_cdate_false);
+        }))
+
     }
 
     toggleChange_is_asc_cId = () => {
-        //this.setState(prevState => ({is_asc_cId: !prevState.is_asc_cId }))
-        const value = this.props.Store.is_asc_cId;
-        this.props.Store.is_asc_cdate = !value;
+        this.setState(prevState => ({is_asc_cId: !prevState.is_asc_cId }, () => {
+            const value = this.state.is_asc_cId;
+            value ? this.store.dispatch(senior_search_is_asc_cId_true):this.store.dispatch(senior_search_is_asc_cId_false);
+        }))
+
     }
 
     toggleChange_is_desc_cId = () => {
-        //this.setState(prevState => ({is_desc_cId: !prevState.is_desc_cId }))
-        const value = this.props.Store.is_desc_cId;
-        this.props.Store.is_desc_cId = !value;
+        this.setState(prevState => ({is_desc_cId: !prevState.is_desc_cId }, () => {
+            const value = this.state.is_desc_cId;
+            value ? this.store.dispatch(senior_search_is_desc_cId_true):this.store.dispatch(senior_search_is_desc_cId_false);
+        }))
+
     }
 
     toggleChange_is_asc_byr = () => {
-        //this.setState(prevState => ({is_asc_byr: !prevState.is_asc_byr }))
-        const value = this.props.Store.is_asc_byr;
-        this.props.Store.is_asc_byr = !value;
+        this.setState(prevState => ({is_asc_byr: !prevState.is_asc_byr }, () => {
+            const value = this.state.is_asc_byr;
+            value ? this.store.dispatch(senior_search_is_asc_byr_true):this.store.dispatch(senior_search_is_asc_byr_false);
+        }))
+
     }
 
     toggleChange_is_desc_byr = () => {
-        //this.setState(prevState => ({is_desc_byr: !prevState.is_desc_byr }))
-        const value = this.props.Store.is_desc_byr;
-        this.props.Store.is_desc_byr = !value;
+        this.setState(prevState => ({is_desc_byr: !prevState.is_desc_byr }, () => {
+            const value = this.state.is_desc_byr;
+            value ? this.store.dispatch(senior_search_is_desc_byr_true):this.store.dispatch(senior_search_is_desc_byr_false);
+        }))
+
 
     }
 
