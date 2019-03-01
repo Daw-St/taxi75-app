@@ -6,6 +6,9 @@ import { senior_search_card, senior_search_year, senior_search_number, senior_se
     senior_search_is_asc_cId_false, senior_search_is_desc_cId_true, senior_search_is_desc_cId_false, senior_search_is_asc_byr_true, 
     senior_search_is_asc_byr_false, senior_search_is_desc_byr_true, senior_search_is_desc_byr_false, senior_search_startDate, senior_search_endDate } from '../actions';
 import "react-datepicker/dist/react-datepicker.css";
+import { connect } from 'react-redux';
+
+
 
 class SearchBar extends React.Component {
     constructor(props){
@@ -263,8 +266,26 @@ class SearchBar extends React.Component {
         );
     }
 }
- 
-export default SearchBar;
+
+const mapStateToProps = state => {
+    return {
+        seniorSearch_term: state.index,
+        seniorSearch_year: state.index,
+        seniorSearch_number: state.index,
+        seniorSearch_gender: state.index,
+        seniorSearch_block: state.index,
+        seniorSearch_is_asc_cdate: state.index,
+        seniorSearch_is_desc_cdate: state.index,
+        seniorSearch_is_asc_cId: state.index,
+        seniorSearch_is_desc_cId: state.index,
+        seniorSearch_is_asc_byr: state.index,
+        seniorSearch_is_desc_byr: state.index,
+        seniorSearch_startDate: state.index,
+        seniorSearch_endDate: state.index,
+    }
+}
+
+export default connect(mapStateToProps)(SearchBar);
 
 /*
  <Accordion fluid styled>
