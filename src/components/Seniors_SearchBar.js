@@ -29,6 +29,7 @@ class SearchBar extends React.Component {
         this.handleBlockChange = this.handleBlockChange.bind(this);
     }
 
+
     handleSubmit = (e) => {
         e.preventDefault();
         console.log('assasasasa')
@@ -269,19 +270,19 @@ class SearchBar extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        seniorSearch_term: state.index,
-        seniorSearch_year: state.index,
-        seniorSearch_number: state.index,
-        seniorSearch_gender: state.index,
-        seniorSearch_block: state.index,
-        seniorSearch_is_asc_cdate: state.index,
-        seniorSearch_is_desc_cdate: state.index,
-        seniorSearch_is_asc_cId: state.index,
-        seniorSearch_is_desc_cId: state.index,
-        seniorSearch_is_asc_byr: state.index,
-        seniorSearch_is_desc_byr: state.index,
-        seniorSearch_startDate: state.index,
-        seniorSearch_endDate: state.index,
+        seniorSearch_term: state.seniorSearch_term,
+        seniorSearch_year: state.seniorSearch_year,
+        seniorSearch_number: state.seniorSearch_number,
+        seniorSearch_gender: state.seniorSearch_gender,
+        seniorSearch_block: state.seniorSearch_block,
+        seniorSearch_is_asc_cdate: state.seniorSearch_is_asc_cdate,
+        seniorSearch_is_desc_cdate: state.seniorSearch_is_desc_cdate,
+        seniorSearch_is_asc_cId: state.seniorSearch_is_asc_cId,
+        seniorSearch_is_desc_cId: state.seniorSearch_is_desc_cId,
+        seniorSearch_is_asc_byr: state.seniorSearch_is_asc_byr,
+        seniorSearch_is_desc_byr: state.seniorSearch_is_desc_byr,
+        seniorSearch_startDate: state.seniorSearch_startDate,
+        seniorSearch_endDate: state.seniorSearch_endDate,
     }
 }
 
