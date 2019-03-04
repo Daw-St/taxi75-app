@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 class SearchBar extends React.Component {
     constructor(props){
         super(props);
+        console.log(this.props.seniorSearch_startDate + 'pokaz')
         this.state = {
             activeIndex: 0,
             is_asc_cdate: false,
@@ -35,6 +36,8 @@ class SearchBar extends React.Component {
         console.log('assasasasa')
         console.log(this.state)
         this.props.onSubmit({id_karty: this.state.term, year: this.state.year});
+        console.log(this.props.senior_search_card)
+        console.log(this.props)
       }
 
     handleChangeStart(date) {
@@ -75,7 +78,6 @@ class SearchBar extends React.Component {
             const value = this.state.is_asc_cdate;
             value ? this.store.dispatch(senior_search_is_asc_cdate_true):this.store.dispatch(senior_search_is_asc_cdate_false);
         }))
-
 
     }
 
@@ -166,8 +168,8 @@ class SearchBar extends React.Component {
                     control={Input}
                     label='ID Karty:'
                     placeholder='00000000K'
-                    onChange={(e) => { this.store.dispatch(senior_search_card(e.target.value)) }}
-                    value={this.store.getState().seniorSearch_term}
+                    onChange={(e) => { senior_search_card(e.target.value) }}
+                    value={this.props.seniorSearch_term}
                 />
                 <Form.Field
                     id='form-input-control-first-name'
@@ -175,7 +177,7 @@ class SearchBar extends React.Component {
                     label='Rok Urodzenia:'
                     placeholder='1901'
                     onChange={(e) => { this.store.dispatch(senior_search_year(e.target.value)) }}
-                    value={this.store.getState().seniorSearch_year}
+                    value={this.props.seniorSearch_year}
                 />
                 <Form.Field
                     id='form-input-control-first-name'
@@ -183,7 +185,7 @@ class SearchBar extends React.Component {
                     label='Numer Telefonu:'
                     placeholder='121121121'
                     onChange={(e) => { this.store.disatch(senior_search_number(e.target.value)) }}
-                    value={this.store.getState().seniorSearch_number}
+                    value={this.props.seniorSearch_number}
                 />
                 <Form.Field>
                     <label>Płeć:</label>
@@ -204,18 +206,18 @@ class SearchBar extends React.Component {
                     placeholder='2018/10/01'
                     >
                     <DatePicker 
-                        selected={this.store.getState().seniorSearch_startDate}
-                        startDate={this.store.getState().seniorSearch_startDate}
-                        endDate={this.store.getState().seniorSearch_endDate}
+                        selected={this.props.seniorSearch_startDate}
+                        startDate={this.props.seniorSearch_startDate}
+                        endDate={this.props.seniorSearch_endDate}
                         onChange={this.handleChangeStart}
-                        value={this.store.getState().seniorSearch_startDate}
+                        value={this.props.seniorSearch_startDate}
                 />
                     <DatePicker 
-                        selected={this.store.getState().seniorSearch_endDate}
-                        startDate={this.store.getState().seniorSearch_startDate}
-                        endDate={this.store.getState().seniorSearch_endDate}
+                        selected={this.props.seniorSearch_endDate}
+                        startDate={this.props.seniorSearch_startDate}
+                        endDate={this.props.seniorSearch_endDate}
                         onChange={this.handleChangeEnd}
-                        value={this.store.getState().seniorSearch_endDate}
+                        value={this.props.seniorSearch_endDate}
                 />
                 </Form.Field>
                 <Form.Field>
@@ -231,34 +233,34 @@ class SearchBar extends React.Component {
                 </Form.Group>
                 <Form.Group>
                 <Form.Field control={Checkbox} label={<label>Data utowrzenia rosnąco</label>} 
-                    checked={this.props.Store.is_asc_cdate}
+                    checked={this.props.is_asc_cdate}
                     onChange={this.toggleChange_is_asc_cdate}
-                    value={this.props.Store.is_asc_cdate}
+                    value={this.props.is_asc_cdate}
                 />
                 <Form.Field control={Checkbox} label={<label>Data utworzenia malejąco</label>} 
-                    checked={this.props.Store.is_desc_cdate}
+                    checked={this.props.is_desc_cdate}
                     onChange={this.toggleChange_is_desc_cdate}
-                    value={this.props.Store.is_asc_cdate}
+                    value={this.props.is_asc_cdate}
                 />
                 <Form.Field control={Checkbox} label={<label>ID Karty rosnąco</label>} 
-                    checked={this.props.Store.is_asc_cId}
+                    checked={this.props.is_asc_cId}
                     onChange={this.toggleChange_is_asc_cId}
-                    value={this.props.Store.is_asc_cId}
+                    value={this.props.is_asc_cId}
                 />
                 <Form.Field control={Checkbox} label={<label>ID Karty malejąco</label>} 
-                    checked={this.props.Store.is_desc_cId}
+                    checked={this.props.is_desc_cId}
                     onChange={this.toggleChange_is_desc_cId}
-                    valye={this.props.Store.is_desc_cId}
+                    valye={this.props.is_desc_cId}
                 />
                 <Form.Field control={Checkbox} label={<label>Data urodzenia rosnąco</label>} 
-                    checked={this.props.Store.is_asc_byr}
+                    checked={this.props.is_asc_byr}
                     onChange={this.toggleChange_is_asc_byr}
-                    value={this.props.Store.is_asc_byr}
+                    value={this.props.is_asc_byr}
                 />
                 <Form.Field control={Checkbox} label={<label>Data urdzenia malejąco</label>} 
-                    checked={this.props.Store.is_desc_byr}
+                    checked={this.props.is_desc_byr}
                     onChange={this.toggleChange_is_desc_byr}
-                    value={this.props.Store.is_desc_byr}
+                    value={this.props.is_desc_byr}
                 />
                 </Form.Group>
                 <Form.Button content='Wyszukaj' type='submit' />
@@ -286,7 +288,12 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(SearchBar);
+const mapDispatchToProps = {senior_search_card, senior_search_year, senior_search_number, senior_search_gender, senior_search_block, senior_search_is_asc_cdate_true, 
+    senior_search_is_asc_cdate_false, senior_search_is_desc_cdate_true, senior_search_is_desc_cdate_false, senior_search_is_asc_cId_true, 
+    senior_search_is_asc_cId_false, senior_search_is_desc_cId_true, senior_search_is_desc_cId_false, senior_search_is_asc_byr_true, 
+    senior_search_is_asc_byr_false, senior_search_is_desc_byr_true, senior_search_is_desc_byr_false, senior_search_startDate, senior_search_endDate }
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
 
 /*
  <Accordion fluid styled>
