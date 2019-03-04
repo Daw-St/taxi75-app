@@ -135,12 +135,12 @@ class SearchBar extends React.Component {
 
     handleSelectChangeGender = (e, { name, value }) => {
         //this.props.Store.gender = value;
-        this.store.dispatch(senior_search_gender(value))
+        this.props.senior_search_gender(value)
     }
 
     handleSelectChangeBlock = (e, { name, value }) => {
         //this.props.Store.gender = value;
-        this.store.dispatch(senior_search_block(value))
+        this.props.senior_search_block(value)
     }
 
     render() {
@@ -174,7 +174,7 @@ class SearchBar extends React.Component {
                     control={Input}
                     label='Rok Urodzenia:'
                     placeholder='1901'
-                    onChange={(e) => { this.store.dispatch(senior_search_year(e.target.value)) }}
+                    onChange={(e) => { this.props.senior_search_year(e.target.value) }}
                     value={this.props.seniorSearch_year}
                 />
                 <Form.Field
@@ -182,7 +182,7 @@ class SearchBar extends React.Component {
                     control={Input}
                     label='Numer Telefonu:'
                     placeholder='121121121'
-                    onChange={(e) => { this.store.disatch(senior_search_number(e.target.value)) }}
+                    onChange={(e) => { this.props.senior_search_number(e.target.value) }}
                     value={this.props.seniorSearch_number}
                 />
                 <Form.Field>
