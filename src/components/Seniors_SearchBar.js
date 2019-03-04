@@ -33,11 +33,8 @@ class SearchBar extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log('assasasasa')
-        console.log(this.state)
-        this.props.onSubmit({id_karty: this.state.term, year: this.state.year});
-        console.log(this.props.senior_search_card)
         console.log(this.props)
+        console.log(this.state)
       }
 
     handleChangeStart(date) {
@@ -74,52 +71,53 @@ class SearchBar extends React.Component {
       }
  
     toggleChange_is_asc_cdate = () => {
+        let change = this.state.is_asc_cdate;
+        change? this.setState({is_asc_cdate: false}, () => this.props.senior_search_is_asc_cdate_false()):
+        this.setState({is_asc_cdate: true}, () => this.props.senior_search_is_asc_cdate_true())
+        console.log(this.props.seniorSearch_is_asc_cdate)
+        /*
+        console.log(this.state.is_asc_cdate)
         this.setState(prevState => ({is_asc_cdate: !prevState.is_asc_cdate }, () => {
+            console.log(this.state.is_asc_cdate)
             const value = this.state.is_asc_cdate;
-            value ? this.store.dispatch(senior_search_is_asc_cdate_true):this.store.dispatch(senior_search_is_asc_cdate_false);
+            value ? this.props.senior_search_is_asc_cdate_true():this.props.senior_search_is_asc_cdate_false();
         }))
-
+        */
+        /*
+       this.setState({is_asc_cdate: true})
+       this.props.senior_search_is_asc_cdate_true()*/
     }
 
     toggleChange_is_desc_cdate = () => {
-        this.setState(prevState => ({is_desc_cdate: !prevState.is_desc_cdate }, () => {
-            const value = this.state.is_desc_cdate;
-            value ? this.store.dispatch(senior_search_is_desc_cdate_true):this.store.dispatch(senior_search_is_desc_cdate_false);
-        }))
-
+        let change = this.state.is_desc_cdate;
+        change? this.setState({is_desc_cdate: false}, () => this.props.senior_search_is_desc_cdate_false()):
+        this.setState({is_desc_cdate: true}, () => this.props.senior_search_is_desc_cdate_true())
+        console.log(this.props.seniorSearch_is_asc_cdate)
     }
 
     toggleChange_is_asc_cId = () => {
-        this.setState(prevState => ({is_asc_cId: !prevState.is_asc_cId }, () => {
-            const value = this.state.is_asc_cId;
-            value ? this.store.dispatch(senior_search_is_asc_cId_true):this.store.dispatch(senior_search_is_asc_cId_false);
-        }))
-
+        let change = this.state.is_asc_cId;
+        change? this.setState({is_asc_cId: false}, () => this.props.senior_search_is_asc_cId_false()):
+        this.setState({is_asc_cId: true}, () => this.props.senior_search_is_asc_cId_true())
+        console.log(this.props.seniorSearch_is_asc_cId)
     }
 
     toggleChange_is_desc_cId = () => {
-        this.setState(prevState => ({is_desc_cId: !prevState.is_desc_cId }, () => {
-            const value = this.state.is_desc_cId;
-            value ? this.store.dispatch(senior_search_is_desc_cId_true):this.store.dispatch(senior_search_is_desc_cId_false);
-        }))
-
+        let change = this.state.is_desc_cId;
+        change? this.setState({is_desc_cId: false}, () => this.props.senior_search_is_desc_cId_false()):
+        this.setState({is_desc_cId: true}, () => this.props.senior_search_is_desc_cId_true())
     }
 
     toggleChange_is_asc_byr = () => {
-        this.setState(prevState => ({is_asc_byr: !prevState.is_asc_byr }, () => {
-            const value = this.state.is_asc_byr;
-            value ? this.store.dispatch(senior_search_is_asc_byr_true):this.store.dispatch(senior_search_is_asc_byr_false);
-        }))
-
+        let change = this.state.is_asc_byr;
+        change? this.setState({is_asc_byr: false}, () => this.props.senior_search_is_asc_byr_false()):
+        this.setState({is_asc_byr: true}, () => this.props.senior_search_is_asc_byr_true())
     }
 
     toggleChange_is_desc_byr = () => {
-        this.setState(prevState => ({is_desc_byr: !prevState.is_desc_byr }, () => {
-            const value = this.state.is_desc_byr;
-            value ? this.store.dispatch(senior_search_is_desc_byr_true):this.store.dispatch(senior_search_is_desc_byr_false);
-        }))
-
-
+        let change = this.state.is_desc_byr;
+        change? this.setState({is_desc_byr: false}, () => this.props.senior_search_is_desc_byr_false()):
+        this.setState({is_desc_byr: true}, () => this.props.senior_search_is_desc_byr_true())
     }
 
     handleGenderChange = (selectedOption) => {
@@ -168,7 +166,7 @@ class SearchBar extends React.Component {
                     control={Input}
                     label='ID Karty:'
                     placeholder='00000000K'
-                    onChange={(e) => { senior_search_card(e.target.value) }}
+                    onChange={(e) => { this.props.senior_search_card(e.target.value) }}
                     value={this.props.seniorSearch_term}
                 />
                 <Form.Field
