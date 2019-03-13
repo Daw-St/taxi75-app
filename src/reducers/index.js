@@ -16,6 +16,23 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case 'SENIOR_SEARCH':
+            console.log('wybrales senior search')
+            return Object.assign({}, action, {
+                seniorSearch_term: action.data_seniorSearch_term,
+                seniorSearch_year: action.data_seniorSearch_year,
+                seniorSearch_number: action.data_seniorSearch_number,
+                seniorSearch_gender: action.data_seniorSearch_gender,
+                seniorSearch_block: action.data_seniorSearch_block,
+                seniorSearch_is_asc_cdate: action.data_seniorSearch_is_asc_cdate,
+                seniorSearch_is_desc_cdate: action.data_seniorSearch_is_desc_cdate,
+                seniorSearch_is_asc_cId: action.data_seniorSearch_is_asc_cId,
+                seniorSearch_is_desc_cId: action.data_seniorSearch_is_desc_cId,
+                seniorSearch_is_asc_byr: action.data_seniorSearch_is_asc_byr,
+                seniorSearch_is_desc_byr: action.data_seniorSearch_is_desc_byr,
+                seniorSearch_startDate: action.data_seniorSearch_startDate,
+                seniorSearch_endDate: action.data_seniorSearch_endDate
+            })
         case 'SENIOR_SEARCH_CARD':
             console.log('wybrales senior serach id')
             return Object.assign({}, state, {

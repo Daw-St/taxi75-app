@@ -1,12 +1,16 @@
 import React from 'react';
-import DatePicker from "react-datepicker";
+import  DatePicker  from "react-datepicker";
+import { registerLocale } from 'react-datepicker';
 import { Accordion, Icon, Form, Input, TextArea, Button, Checkbox, Select, Dropdown} from 'semantic-ui-react';
 import { senior_search_card, senior_search_year, senior_search_number, senior_search_gender, senior_search_block, senior_search_is_asc_cdate_true, 
     senior_search_is_asc_cdate_false, senior_search_is_desc_cdate_true, senior_search_is_desc_cdate_false, senior_search_is_asc_cId_true, 
     senior_search_is_asc_cId_false, senior_search_is_desc_cId_true, senior_search_is_desc_cId_false, senior_search_is_asc_byr_true, 
-    senior_search_is_asc_byr_false, senior_search_is_desc_byr_true, senior_search_is_desc_byr_false, senior_search_startDate, senior_search_endDate } from '../actions';
+    senior_search_is_asc_byr_false, senior_search_is_desc_byr_true, senior_search_is_desc_byr_false, senior_search_startDate, senior_search_endDate, senior_search } from '../actions';
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from 'react-redux';
+import store from '../store';
+import pl from 'date-fns/locale/pl';
+registerLocale('pl', pl);
 
 
 
@@ -16,14 +20,20 @@ class SearchBar extends React.Component {
         console.log(this.props.seniorSearch_startDate + 'pokaz')
         this.state = {
             activeIndex: 0,
-            is_asc_cdate: false,
-            is_desc_cdate: false,
-            is_asc_cId: false,
-            is_desc_cId: false,
-            is_asc_byr: false,
-            is_desc_byr: false
+            is_asc_cdate: this.props.seniorSearch_is_asc_cdate,
+            is_desc_cdate: this.props.seniorSearch_is_desc_cdate,
+            is_asc_cId: this.props.seniorSearch_is_asc_cId,
+            is_desc_cId: this.props.seniorSearch_is_desc_cId,
+            is_asc_byr: this.props.seniorSearch_is_asc_byr,
+            is_desc_byr: this.props.seniorSearch_is_desc_byr,
+            card_id: this.props.seniorSearch_term,
+            birth_year: this.props.seniorSearch_year,
+            phone_number: this.props.seniorSearch_number,
+            sex: this.props.seniorSearch_gender,
+            blocked: this.props.seniorSearch_block,
+            date_from: this.props.seniorSearch_startDate,
+            date_to: this.props.seniorSearch_endDate
         };
-        this.store = this.props.store;
         this.handleChangeStart = this.handleChangeStart.bind(this);
         this.handleChangeEnd = this.handleChangeEnd.bind(this);
         this.handleGenderChange = this.handleGenderChange.bind(this);
@@ -35,18 +45,36 @@ class SearchBar extends React.Component {
         e.preventDefault();
         console.log(this.props)
         console.log(this.state)
+        const data = {
+            term: this.state.card_id,
+            year: this.state.birth_year,
+            number: this.state.phone_number,
+            gender: this.state.sex,
+            block: this.state.blocked,
+            is_asc_cdate: this.state.is_asc_cdate,
+            is_desc_cdate: this.state.is_desc_cdate,
+            is_asc_cId: this.state.is_asc_cId,
+            is_desc_cId: this.state.is_desc_cId,
+            is_asc_byr: this.state.is_asc_byr,
+            is_desc_byr: this.state.is_desc_byr,
+            startDate: this.state.date_from,
+            endDate: this.state.date_to
+        }
+        store.dispatch(senior_search(data), )
       }
 
     handleChangeStart(date) {
         //this.setState({startDate: date})
         //this.props.Store.startDate = date;
-        this.store.dispatch(senior_search_startDate(date))
+        //this.store.dispatch(senior_search_startDate(date))
+        this.setState({date_from: date})
     }
   
     handleChangeEnd(date) {
         //this.setState({endDate: date})
         //this.props.Store.endDate = date;
-        this.store.dispatch(senior_search_endDate(date))
+        //this.store.dispatch(senior_search_endDate(date))
+        this.setState({date_to: date})
     }
 
     onFormSubmit = event => {
@@ -166,24 +194,24 @@ class SearchBar extends React.Component {
                     control={Input}
                     label='ID Karty:'
                     placeholder='00000000K'
-                    onChange={(e) => { this.props.senior_search_card(e.target.value) }}
-                    value={this.props.seniorSearch_term}
+                    onChange = {(e) => {this.setState({card_id: e.target.value})}}
+                    value={this.state.card_id}
                 />
                 <Form.Field
                     id='form-input-control-first-name'
                     control={Input}
                     label='Rok Urodzenia:'
                     placeholder='1901'
-                    onChange={(e) => { this.props.senior_search_year(e.target.value) }}
-                    value={this.props.seniorSearch_year}
+                    onChange = {(e) => {this.setState({birth_year: e.target.value})}}
+                    value={this.state.birth_year}
                 />
                 <Form.Field
                     id='form-input-control-first-name'
                     control={Input}
                     label='Numer Telefonu:'
                     placeholder='121121121'
-                    onChange={(e) => { this.props.senior_search_number(e.target.value) }}
-                    value={this.props.seniorSearch_number}
+                    onChange = {(e) => {this.setState({phone_number: e.target.value})}}
+                    value={this.state.phone_number}
                 />
                 <Form.Field>
                     <label>Płeć:</label>
@@ -204,18 +232,22 @@ class SearchBar extends React.Component {
                     placeholder='2018/10/01'
                     >
                     <DatePicker 
-                        selected={this.props.seniorSearch_startDate}
-                        startDate={this.props.seniorSearch_startDate}
-                        endDate={this.props.seniorSearch_endDate}
+                        selected={this.state.date_from}
+                        startDate={this.state.date_from}
+                        endDate={this.state.date_to}
                         onChange={this.handleChangeStart}
-                        value={this.props.seniorSearch_startDate}
+                        value={this.state.date_from}
+                        dateFormat="d/MM/YYYY"
+                        locale="pl"
                 />
                     <DatePicker 
-                        selected={this.props.seniorSearch_endDate}
-                        startDate={this.props.seniorSearch_startDate}
-                        endDate={this.props.seniorSearch_endDate}
+                        selected={this.state.date_to}
+                        startDate={this.state.date_from}
+                        endDate={this.state.date_to}
                         onChange={this.handleChangeEnd}
-                        value={this.props.seniorSearch_endDate}
+                        value={this.state.date_to}
+                        dateFormat="d/MM/YYYY"
+                        locale="pl"
                 />
                 </Form.Field>
                 <Form.Field>
@@ -286,7 +318,7 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = {senior_search_card, senior_search_year, senior_search_number, senior_search_gender, senior_search_block, senior_search_is_asc_cdate_true, 
+const mapDispatchToProps = {senior_search, senior_search_card, senior_search_year, senior_search_number, senior_search_gender, senior_search_block, senior_search_is_asc_cdate_true, 
     senior_search_is_asc_cdate_false, senior_search_is_desc_cdate_true, senior_search_is_desc_cdate_false, senior_search_is_asc_cId_true, 
     senior_search_is_asc_cId_false, senior_search_is_desc_cId_true, senior_search_is_desc_cId_false, senior_search_is_asc_byr_true, 
     senior_search_is_asc_byr_false, senior_search_is_desc_byr_true, senior_search_is_desc_byr_false, senior_search_startDate, senior_search_endDate }
