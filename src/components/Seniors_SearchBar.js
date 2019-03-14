@@ -9,8 +9,9 @@ import { senior_search_card, senior_search_year, senior_search_number, senior_se
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from 'react-redux';
 import store from '../store';
-import pl from 'date-fns/locale/pl';
-registerLocale('pl', pl);
+import Seniors  from '../containers/Seniors';
+//import pl from 'date-fns/locale/pl';
+//registerLocale('pl', pl);
 
 
 
@@ -61,6 +62,7 @@ class SearchBar extends React.Component {
             endDate: this.state.date_to
         }
         store.dispatch(senior_search(data), )
+        new Seniors().getValid()
       }
 
     handleChangeStart(date) {
