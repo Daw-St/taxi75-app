@@ -1,19 +1,19 @@
 export const senior_search = (data) => {
     return {
         type: 'SENIOR_SEARCH',
-        data_seniorSearch_term: data.term,
-        data_seniorSearch_year: data.year,
-        data_seniorSearch_number: data.number,
-        data_seniorSearch_gender: data.gender,
-        data_seniorSearch_block: data.block,
-        data_seniorSearch_is_asc_cdate: data.is_asc_cdate,
-        data_seniorSearch_is_desc_cdate: data.is_desc_cdate,
-        data_seniorSearch_is_asc_cId: data.is_asc_cId,
-        data_seniorSearch_is_desc_cId: data.is_desc_cId,
-        data_seniorSearch_is_asc_byr: data.is_asc_byr,
-        data_seniorSearch_is_desc_byr: data.is_desc_byr,
-        data_seniorSearch_startDate: data.startDate,
-        data_seniorSearch_endDate: data.endDate,
+        seniorSearch_term: data.term,
+        seniorSearch_year: data.year,
+        seniorSearch_number: data.number,
+        seniorSearch_gender: data.gender,
+        seniorSearch_block: data.block,
+        seniorSearch_is_asc_cdate: data.is_asc_cdate,
+        seniorSearch_is_desc_cdate: data.is_desc_cdate,
+        seniorSearch_is_asc_cId: data.is_asc_cId,
+        seniorSearch_is_desc_cId: data.is_desc_cId,
+        seniorSearch_is_asc_byr: data.is_asc_byr,
+        seniorSearch_is_desc_byr: data.is_desc_byr,
+        seniorSearch_startDate: data.startDate,
+        seniorSearch_endDate: data.endDate,
     }
 }
 
@@ -134,6 +134,13 @@ export const senior_search_startDate = (data) => {
 export const senior_search_endDate = (data) => {
     return {
         type: 'SENIOR_SEARCH_ENDDATE',
+        data: data
+    }
+}
+
+export const update_seniors_list = (data) => {
+    return {
+        type: 'UPDATE_SENIORS_LIST',
         data: data
     }
 }

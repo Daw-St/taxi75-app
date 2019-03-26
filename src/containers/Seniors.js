@@ -8,9 +8,10 @@ import SeniorPopup from '../components/Seniors_Popup_add';
 import './Seniors.css';
 import { connect } from 'react-redux';
 import store from '../store';
+import {update_seniors_list} from "../actions";
 
 class Seniors extends React.Component {
-    state = { 
+    state = {
         records: [],
             is_asc_cdate: this.props.seniorSearch_is_asc_cdate,
             is_desc_cdate: this.props.seniorSearch_is_desc_cdate,
@@ -26,12 +27,12 @@ class Seniors extends React.Component {
             date_from: this.props.seniorSearch_startDate,
             date_to: this.props.seniorSearch_endDate
          };
-    
+
     onSearchSubmit = async ({term, year}) => {
         console.log(term + 'poaz temrs')
         const response = await api.get(`/seniors/fill/${term}`)
         console.log(response.data.data)
-       this.setState({ records: response.data.data });
+        store.dispatch(update_seniors_list(response.data.data));
     }
 
     getValid = async () => {
@@ -72,13 +73,13 @@ class Seniors extends React.Component {
         console.log( 'getVaidSeniors')
         console.log(request)
         const response = await api.get(`/seniors/all?dateFrom=${this.state.date_from}&dateTo=${this.state.date_to}${request}`)
-        this.setState({ records: response.data.data})
+        store.dispatch(update_seniors_list(response.data.data));
 
     }
 
     showAll = async () => {
         const response = await api.get(`/seniors/all`)
-        this.setState({ records: response.data.data });
+        store.dispatch(update_seniors_list(response.data.data));
     }
 
     render() {
@@ -94,8 +95,8 @@ class Seniors extends React.Component {
             <SeniorPopup className="button"/>
         </Grid.Column>
       </Grid>
-        <TableSeniors records={ this.state.records }/>
-        Liczba wyników: { this.state.records.length }.
+        <TableSeniors records={ this.props.seniors_list }/>
+        Liczba wyników: { this.props.seniors_list.length }.
     </div>
     </div>
     );
@@ -118,6 +119,7 @@ const mapStateToProps = state => {
         seniorSearch_is_desc_byr: state.seniorSearch_is_desc_byr,
         seniorSearch_startDate: state.seniorSearch_startDate,
         seniorSearch_endDate: state.seniorSearch_endDate,
+        seniors_list: state.seniors
     }
 }
 export default connect(mapStateToProps)(Seniors);

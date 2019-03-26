@@ -2,16 +2,34 @@ import React from 'react';
 import  DatePicker  from "react-datepicker";
 import { registerLocale } from 'react-datepicker';
 import { Accordion, Icon, Form, Input, TextArea, Button, Checkbox, Select, Dropdown} from 'semantic-ui-react';
-import { senior_search_card, senior_search_year, senior_search_number, senior_search_gender, senior_search_block, senior_search_is_asc_cdate_true, 
-    senior_search_is_asc_cdate_false, senior_search_is_desc_cdate_true, senior_search_is_desc_cdate_false, senior_search_is_asc_cId_true, 
-    senior_search_is_asc_cId_false, senior_search_is_desc_cId_true, senior_search_is_desc_cId_false, senior_search_is_asc_byr_true, 
-    senior_search_is_asc_byr_false, senior_search_is_desc_byr_true, senior_search_is_desc_byr_false, senior_search_startDate, senior_search_endDate, senior_search } from '../actions';
+import {
+    senior_search_card,
+    senior_search_year,
+    senior_search_number,
+    senior_search_gender,
+    senior_search_block,
+    senior_search_is_asc_cdate_true,
+    senior_search_is_asc_cdate_false,
+    senior_search_is_desc_cdate_true,
+    senior_search_is_desc_cdate_false,
+    senior_search_is_asc_cId_true,
+    senior_search_is_asc_cId_false,
+    senior_search_is_desc_cId_true,
+    senior_search_is_desc_cId_false,
+    senior_search_is_asc_byr_true,
+    senior_search_is_asc_byr_false,
+    senior_search_is_desc_byr_true,
+    senior_search_is_desc_byr_false,
+    senior_search_startDate,
+    senior_search_endDate,
+    senior_search,
+    update_seniors_list
+} from '../actions';
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from 'react-redux';
 import store from '../store';
 import Seniors  from '../containers/Seniors';
-//import pl from 'date-fns/locale/pl';
-//registerLocale('pl', pl);
+import api from "../api/api";
 
 
 
@@ -42,10 +60,10 @@ class SearchBar extends React.Component {
     }
 
 
-    handleSubmit = (e) => {
+    handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(this.props)
-        console.log(this.state)
+        console.log(this.props);
+        console.log(this.state);
         const data = {
             term: this.state.card_id,
             year: this.state.birth_year,
@@ -60,10 +78,14 @@ class SearchBar extends React.Component {
             is_desc_byr: this.state.is_desc_byr,
             startDate: this.state.date_from,
             endDate: this.state.date_to
-        }
-        store.dispatch(senior_search(data), )
-        new Seniors().getValid()
-      }
+        };
+        store.dispatch(senior_search(data));
+
+        const response = await api.get(`/seniors/all?desc_byr=${data.is_desc_byr}&dateFrom=${this.state.date_from.toISOString()}&dateTo=${this.state.date_to.toISOString()}&cart_id=${this.state.card_id}&sex=${this.state.sex}&birth_year=${this.state.birth_year}&phone_number=${this.state.phone_number}&blocked=${this.state.blocked}&asc_cId=${this.state.is_asc_cId}&desc_cId=${this.state.is_desc_cId}&asc_cdate=${this.state.is_asc_cdate}&desc_cdate=${this.state.is_desc_cdate}`);
+
+        store.dispatch(update_seniors_list(response.data.data));
+
+      };
 
     handleChangeStart(date) {
         //this.setState({startDate: date})
@@ -71,7 +93,7 @@ class SearchBar extends React.Component {
         //this.store.dispatch(senior_search_startDate(date))
         this.setState({date_from: date})
     }
-  
+
     handleChangeEnd(date) {
         //this.setState({endDate: date})
         //this.props.Store.endDate = date;
@@ -81,7 +103,7 @@ class SearchBar extends React.Component {
 
     onFormSubmit = event => {
         event.preventDefault();
-        
+
         this.props.onSubmit(this.state.term);
     }
 
@@ -96,10 +118,10 @@ class SearchBar extends React.Component {
         const { index } = titleProps
         const { activeIndex } = this.state
         const newIndex = activeIndex === index ? -1 : index
-    
+
         this.setState({ activeIndex: newIndex })
       }
- 
+
     toggleChange_is_asc_cdate = () => {
         let change = this.state.is_asc_cdate;
         change? this.setState({is_asc_cdate: false}, () => this.props.senior_search_is_asc_cdate_false()):
@@ -164,13 +186,13 @@ class SearchBar extends React.Component {
     }
 
     handleSelectChangeGender = (e, { name, value }) => {
-        //this.props.Store.gender = value;
-        this.props.senior_search_gender(value)
+        store.dispatch(senior_search_gender(value));
+        this.setState({sex: value});
     }
 
     handleSelectChangeBlock = (e, { name, value }) => {
-        //this.props.Store.gender = value;
-        this.props.senior_search_block(value)
+        store.dispatch(senior_search_block(value));
+        this.setState({blocked: value});
     }
 
     render() {
@@ -233,23 +255,21 @@ class SearchBar extends React.Component {
                     label='Wyszukaj po dacie utworzenia w zadanym przedziale czasowym:'
                     placeholder='2018/10/01'
                     >
-                    <DatePicker 
+                    <DatePicker
                         selected={this.state.date_from}
                         startDate={this.state.date_from}
                         endDate={this.state.date_to}
                         onChange={this.handleChangeStart}
                         value={this.state.date_from}
-                        dateFormat="d/MM/YYYY"
-                        locale="pl"
+                        dateFormat="yyyy-MM-dd"
                 />
-                    <DatePicker 
+                    <DatePicker
                         selected={this.state.date_to}
                         startDate={this.state.date_from}
                         endDate={this.state.date_to}
                         onChange={this.handleChangeEnd}
                         value={this.state.date_to}
-                        dateFormat="d/MM/YYYY"
-                        locale="pl"
+                        dateFormat="yyyy-MM-dd"
                 />
                 </Form.Field>
                 <Form.Field>
@@ -264,32 +284,32 @@ class SearchBar extends React.Component {
                 </Form.Field>
                 </Form.Group>
                 <Form.Group>
-                <Form.Field control={Checkbox} label={<label>Data utowrzenia rosnąco</label>} 
+                <Form.Field control={Checkbox} label={<label>Data utowrzenia rosnąco</label>}
                     checked={this.props.is_asc_cdate}
                     onChange={this.toggleChange_is_asc_cdate}
                     value={this.props.is_asc_cdate}
                 />
-                <Form.Field control={Checkbox} label={<label>Data utworzenia malejąco</label>} 
+                <Form.Field control={Checkbox} label={<label>Data utworzenia malejąco</label>}
                     checked={this.props.is_desc_cdate}
                     onChange={this.toggleChange_is_desc_cdate}
                     value={this.props.is_asc_cdate}
                 />
-                <Form.Field control={Checkbox} label={<label>ID Karty rosnąco</label>} 
+                <Form.Field control={Checkbox} label={<label>ID Karty rosnąco</label>}
                     checked={this.props.is_asc_cId}
                     onChange={this.toggleChange_is_asc_cId}
                     value={this.props.is_asc_cId}
                 />
-                <Form.Field control={Checkbox} label={<label>ID Karty malejąco</label>} 
+                <Form.Field control={Checkbox} label={<label>ID Karty malejąco</label>}
                     checked={this.props.is_desc_cId}
                     onChange={this.toggleChange_is_desc_cId}
                     valye={this.props.is_desc_cId}
                 />
-                <Form.Field control={Checkbox} label={<label>Data urodzenia rosnąco</label>} 
+                <Form.Field control={Checkbox} label={<label>Data urodzenia rosnąco</label>}
                     checked={this.props.is_asc_byr}
                     onChange={this.toggleChange_is_asc_byr}
                     value={this.props.is_asc_byr}
                 />
-                <Form.Field control={Checkbox} label={<label>Data urdzenia malejąco</label>} 
+                <Form.Field control={Checkbox} label={<label>Data urdzenia malejąco</label>}
                     checked={this.props.is_desc_byr}
                     onChange={this.toggleChange_is_desc_byr}
                     value={this.props.is_desc_byr}
@@ -320,60 +340,4 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = {senior_search, senior_search_card, senior_search_year, senior_search_number, senior_search_gender, senior_search_block, senior_search_is_asc_cdate_true, 
-    senior_search_is_asc_cdate_false, senior_search_is_desc_cdate_true, senior_search_is_desc_cdate_false, senior_search_is_asc_cId_true, 
-    senior_search_is_asc_cId_false, senior_search_is_desc_cId_true, senior_search_is_desc_cId_false, senior_search_is_asc_byr_true, 
-    senior_search_is_asc_byr_false, senior_search_is_desc_byr_true, senior_search_is_desc_byr_false, senior_search_startDate, senior_search_endDate }
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
-
-/*
- <Accordion fluid styled>
-                    <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
-                        <Icon name='dropdown' />Wyszukaj szybko po ID Karty
-                    </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 0}>
-                        <div className="field">
-                            <label>Wyszukaj: </label>
-                            <input 
-                                type="text" 
-                                value={this.state.term} 
-                                onChange={(e) => this.setState({ term: e.target.value })} />
-                        </div>
-                    </Accordion.Content>
-                    <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
-                        <Icon name='dropdown' />Wyszukiwanie zaawansowane
-                    </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 1}>
-                        <div className="field">
-                            <label>Wybierz date utworzenia</label>
-                            <DatePicker 
-                                selected={this.state.startDate}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                    </Accordion.Content>
-                </Accordion>
-
-
-
-
-
-                            <form onSubmit={(event) => this.onFormSubmit(event)} className="ui from">
-            <div className="field">
-            <label>Wyszukaj: </label>
-            <input 
-                type="text" 
-                value={this.state.term} 
-                onChange={(e) => this.setState({ term: e.target.value })} />
-            </div>   
-            <div className="field">
-            <label>Wybierz date utworzenia</label>
-            <DatePicker 
-                selected={this.state.startDate}
-                onChange={this.handleChange}
-                />
-            </div>
-            </form>
-
-*/
+export default connect(mapStateToProps)(SearchBar);
