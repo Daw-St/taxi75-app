@@ -24,7 +24,7 @@ import {
     senior_search_endDate,
     senior_search,
     update_seniors_list
-} from '../actions';
+} from '../actions/index';
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from 'react-redux';
 import store from '../store';
@@ -124,52 +124,40 @@ class SearchBar extends React.Component {
 
     toggleChange_is_asc_cdate = () => {
         let change = this.state.is_asc_cdate;
-        change? this.setState({is_asc_cdate: false}, () => this.props.senior_search_is_asc_cdate_false()):
-        this.setState({is_asc_cdate: true}, () => this.props.senior_search_is_asc_cdate_true())
-        console.log(this.props.seniorSearch_is_asc_cdate)
-        /*
-        console.log(this.state.is_asc_cdate)
-        this.setState(prevState => ({is_asc_cdate: !prevState.is_asc_cdate }, () => {
-            console.log(this.state.is_asc_cdate)
-            const value = this.state.is_asc_cdate;
-            value ? this.props.senior_search_is_asc_cdate_true():this.props.senior_search_is_asc_cdate_false();
-        }))
-        */
-        /*
-       this.setState({is_asc_cdate: true})
-       this.props.senior_search_is_asc_cdate_true()*/
+        change? this.setState({is_asc_cdate: false}, () => store.dispatch(senior_search_is_asc_cdate_false(false))):
+        this.setState({is_asc_cdate: true}, () => store.dispatch(senior_search_is_asc_cdate_true(true)))
     }
 
     toggleChange_is_desc_cdate = () => {
         let change = this.state.is_desc_cdate;
-        change? this.setState({is_desc_cdate: false}, () => this.props.senior_search_is_desc_cdate_false()):
-        this.setState({is_desc_cdate: true}, () => this.props.senior_search_is_desc_cdate_true())
+        change? this.setState({is_desc_cdate: false}, () => store.dispatch(senior_search_is_desc_cdate_false(false))):
+        this.setState({is_desc_cdate: true}, () => store.dispatch(senior_search_is_desc_cdate_true(true)));
         console.log(this.props.seniorSearch_is_asc_cdate)
     }
 
     toggleChange_is_asc_cId = () => {
         let change = this.state.is_asc_cId;
-        change? this.setState({is_asc_cId: false}, () => this.props.senior_search_is_asc_cId_false()):
-        this.setState({is_asc_cId: true}, () => this.props.senior_search_is_asc_cId_true())
+        change? this.setState({is_asc_cId: false}, () => store.dispatch(senior_search_is_asc_cId_false(false))):
+        this.setState({is_asc_cId: true}, () => store.dispatch(senior_search_is_asc_cId_true(true)));
         console.log(this.props.seniorSearch_is_asc_cId)
     }
 
     toggleChange_is_desc_cId = () => {
         let change = this.state.is_desc_cId;
-        change? this.setState({is_desc_cId: false}, () => this.props.senior_search_is_desc_cId_false()):
-        this.setState({is_desc_cId: true}, () => this.props.senior_search_is_desc_cId_true())
+        change? this.setState({is_desc_cId: false}, () => store.dispatch(senior_search_is_desc_cId_false(false))):
+        this.setState({is_desc_cId: true}, () => store.dispatch(senior_search_is_desc_cId_true(true)));
     }
 
     toggleChange_is_asc_byr = () => {
         let change = this.state.is_asc_byr;
-        change? this.setState({is_asc_byr: false}, () => this.props.senior_search_is_asc_byr_false()):
-        this.setState({is_asc_byr: true}, () => this.props.senior_search_is_asc_byr_true())
+        change? this.setState({is_asc_byr: false}, () => store.dispatch(senior_search_is_asc_byr_false(false))):
+        this.setState({is_asc_byr: true}, () => store.dispatch(senior_search_is_asc_byr_true(true)));
     }
 
     toggleChange_is_desc_byr = () => {
         let change = this.state.is_desc_byr;
-        change? this.setState({is_desc_byr: false}, () => this.props.senior_search_is_desc_byr_false()):
-        this.setState({is_desc_byr: true}, () => this.props.senior_search_is_desc_byr_true())
+        change? this.setState({is_desc_byr: false}, () => store.dispatch(senior_search_is_desc_byr_false(false))):
+        this.setState({is_desc_byr: true}, () => store.dispatch(senior_search_is_desc_byr_true(true)))
     }
 
     handleGenderChange = (selectedOption) => {
@@ -324,19 +312,19 @@ class SearchBar extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        seniorSearch_term: state.seniorSearch_term,
-        seniorSearch_year: state.seniorSearch_year,
-        seniorSearch_number: state.seniorSearch_number,
-        seniorSearch_gender: state.seniorSearch_gender,
-        seniorSearch_block: state.seniorSearch_block,
-        seniorSearch_is_asc_cdate: state.seniorSearch_is_asc_cdate,
-        seniorSearch_is_desc_cdate: state.seniorSearch_is_desc_cdate,
-        seniorSearch_is_asc_cId: state.seniorSearch_is_asc_cId,
-        seniorSearch_is_desc_cId: state.seniorSearch_is_desc_cId,
-        seniorSearch_is_asc_byr: state.seniorSearch_is_asc_byr,
-        seniorSearch_is_desc_byr: state.seniorSearch_is_desc_byr,
-        seniorSearch_startDate: state.seniorSearch_startDate,
-        seniorSearch_endDate: state.seniorSearch_endDate,
+        seniorSearch_term: state.seniors.seniorSearch_term,
+        seniorSearch_year: state.seniors.seniorSearch_year,
+        seniorSearch_number: state.seniors.seniorSearch_number,
+        seniorSearch_gender: state.seniors.seniorSearch_gender,
+        seniorSearch_block: state.seniors.seniorSearch_block,
+        seniorSearch_is_asc_cdate: state.seniors.seniorSearch_is_asc_cdate,
+        seniorSearch_is_desc_cdate: state.seniors.seniorSearch_is_desc_cdate,
+        seniorSearch_is_asc_cId: state.seniors.seniorSearch_is_asc_cId,
+        seniorSearch_is_desc_cId: state.seniors.seniorSearch_is_desc_cId,
+        seniorSearch_is_asc_byr: state.seniors.seniorSearch_is_asc_byr,
+        seniorSearch_is_desc_byr: state.seniors.seniorSearch_is_desc_byr,
+        seniorSearch_startDate: state.seniors.seniorSearch_startDate,
+        seniorSearch_endDate: state.seniors.seniorSearch_endDate,
     }
 }
 

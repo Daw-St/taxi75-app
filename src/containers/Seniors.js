@@ -8,7 +8,7 @@ import SeniorPopup from '../components/Seniors_Popup_add';
 import './Seniors.css';
 import { connect } from 'react-redux';
 import store from '../store';
-import {update_seniors_list} from "../actions";
+import {update_seniors_list} from "../actions/index";
 
 class Seniors extends React.Component {
     state = {
