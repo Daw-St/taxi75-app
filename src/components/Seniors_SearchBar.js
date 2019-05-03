@@ -1,200 +1,75 @@
 import React from 'react';
-import  DatePicker  from "react-datepicker";
-import { registerLocale } from 'react-datepicker';
-import { Accordion, Icon, Form, Input, TextArea, Button, Checkbox, Select, Dropdown} from 'semantic-ui-react';
-import {
-    senior_search_card,
-    senior_search_year,
-    senior_search_number,
-    senior_search_gender,
-    senior_search_block,
-    senior_search_is_asc_cdate_true,
-    senior_search_is_asc_cdate_false,
-    senior_search_is_desc_cdate_true,
-    senior_search_is_desc_cdate_false,
-    senior_search_is_asc_cId_true,
-    senior_search_is_asc_cId_false,
-    senior_search_is_desc_cId_true,
-    senior_search_is_desc_cId_false,
-    senior_search_is_asc_byr_true,
-    senior_search_is_asc_byr_false,
-    senior_search_is_desc_byr_true,
-    senior_search_is_desc_byr_false,
-    senior_search_startDate,
-    senior_search_endDate,
-    senior_search,
-    update_seniors_list
-} from '../actions/index';
+import {Dropdown, Form, Input} from 'semantic-ui-react';
+import {senior_search, senior_search_gender, update_seniors_list} from '../actions/index';
 import "react-datepicker/dist/react-datepicker.css";
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import store from '../store';
-import Seniors  from '../containers/Seniors';
 import api from "../api/api";
-
-
 
 class SearchBar extends React.Component {
     constructor(props){
         super(props);
-        console.log(this.props.seniorSearch_startDate + 'pokaz')
+
         this.state = {
-            activeIndex: 0,
-            is_asc_cdate: this.props.seniorSearch_is_asc_cdate,
-            is_desc_cdate: this.props.seniorSearch_is_desc_cdate,
-            is_asc_cId: this.props.seniorSearch_is_asc_cId,
-            is_desc_cId: this.props.seniorSearch_is_desc_cId,
-            is_asc_byr: this.props.seniorSearch_is_asc_byr,
-            is_desc_byr: this.props.seniorSearch_is_desc_byr,
             card_id: this.props.seniorSearch_term,
             birth_year: this.props.seniorSearch_year,
             phone_number: this.props.seniorSearch_number,
-            sex: this.props.seniorSearch_gender,
-            blocked: this.props.seniorSearch_block,
-            date_from: this.props.seniorSearch_startDate,
-            date_to: this.props.seniorSearch_endDate
+            sex: this.props.seniorSearch_gender
         };
-        this.handleChangeStart = this.handleChangeStart.bind(this);
-        this.handleChangeEnd = this.handleChangeEnd.bind(this);
+
         this.handleGenderChange = this.handleGenderChange.bind(this);
-        this.handleBlockChange = this.handleBlockChange.bind(this);
     }
 
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(this.props);
-        console.log(this.state);
         const data = {
             term: this.state.card_id,
             year: this.state.birth_year,
             number: this.state.phone_number,
-            gender: this.state.sex,
-            block: this.state.blocked,
-            is_asc_cdate: this.state.is_asc_cdate,
-            is_desc_cdate: this.state.is_desc_cdate,
-            is_asc_cId: this.state.is_asc_cId,
-            is_desc_cId: this.state.is_desc_cId,
-            is_asc_byr: this.state.is_asc_byr,
-            is_desc_byr: this.state.is_desc_byr,
-            startDate: this.state.date_from,
-            endDate: this.state.date_to
+            gender: this.state.sex
         };
         store.dispatch(senior_search(data));
 
-        const response = await api.get(`/seniors/all?desc_byr=${data.is_desc_byr}&dateFrom=${this.state.date_from.toISOString()}&dateTo=${this.state.date_to.toISOString()}&cart_id=${this.state.card_id}&sex=${this.state.sex}&birth_year=${this.state.birth_year}&phone_number=${this.state.phone_number}&blocked=${this.state.blocked}&asc_cId=${this.state.is_asc_cId}&desc_cId=${this.state.is_desc_cId}&asc_cdate=${this.state.is_asc_cdate}&desc_cdate=${this.state.is_desc_cdate}`);
+        const response = await api.get(`/seniors/all?cart_id=${this.state.card_id}&sex=${this.state.sex}&birth_year=${this.state.birth_year}&phone_number=${this.state.phone_number}`);
 
         store.dispatch(update_seniors_list(response.data.data));
 
       };
 
-    handleChangeStart(date) {
-        //this.setState({startDate: date})
-        //this.props.Store.startDate = date;
-        //this.store.dispatch(senior_search_startDate(date))
-        this.setState({date_from: date})
-    }
-
-    handleChangeEnd(date) {
-        //this.setState({endDate: date})
-        //this.props.Store.endDate = date;
-        //this.store.dispatch(senior_search_endDate(date))
-        this.setState({date_to: date})
-    }
-
     onFormSubmit = event => {
         event.preventDefault();
-
         this.props.onSubmit(this.state.term);
-    }
+    };
 
     onFormClick = event => {
         event.preventDefault();
-        console.log(this.state);
-        console.log(this.props.Store);
         this.props.onClick(this.state);
-    }
-
-    handleClick = (e, titleProps) => {
-        const { index } = titleProps
-        const { activeIndex } = this.state
-        const newIndex = activeIndex === index ? -1 : index
-
-        this.setState({ activeIndex: newIndex })
-      }
-
-    toggleChange_is_asc_cdate = () => {
-        let change = this.state.is_asc_cdate;
-        change? this.setState({is_asc_cdate: false}, () => store.dispatch(senior_search_is_asc_cdate_false(false))):
-        this.setState({is_asc_cdate: true}, () => store.dispatch(senior_search_is_asc_cdate_true(true)))
-    }
-
-    toggleChange_is_desc_cdate = () => {
-        let change = this.state.is_desc_cdate;
-        change? this.setState({is_desc_cdate: false}, () => store.dispatch(senior_search_is_desc_cdate_false(false))):
-        this.setState({is_desc_cdate: true}, () => store.dispatch(senior_search_is_desc_cdate_true(true)));
-        console.log(this.props.seniorSearch_is_asc_cdate)
-    }
-
-    toggleChange_is_asc_cId = () => {
-        let change = this.state.is_asc_cId;
-        change? this.setState({is_asc_cId: false}, () => store.dispatch(senior_search_is_asc_cId_false(false))):
-        this.setState({is_asc_cId: true}, () => store.dispatch(senior_search_is_asc_cId_true(true)));
-        console.log(this.props.seniorSearch_is_asc_cId)
-    }
-
-    toggleChange_is_desc_cId = () => {
-        let change = this.state.is_desc_cId;
-        change? this.setState({is_desc_cId: false}, () => store.dispatch(senior_search_is_desc_cId_false(false))):
-        this.setState({is_desc_cId: true}, () => store.dispatch(senior_search_is_desc_cId_true(true)));
-    }
-
-    toggleChange_is_asc_byr = () => {
-        let change = this.state.is_asc_byr;
-        change? this.setState({is_asc_byr: false}, () => store.dispatch(senior_search_is_asc_byr_false(false))):
-        this.setState({is_asc_byr: true}, () => store.dispatch(senior_search_is_asc_byr_true(true)));
-    }
-
-    toggleChange_is_desc_byr = () => {
-        let change = this.state.is_desc_byr;
-        change? this.setState({is_desc_byr: false}, () => store.dispatch(senior_search_is_desc_byr_false(false))):
-        this.setState({is_desc_byr: true}, () => store.dispatch(senior_search_is_desc_byr_true(true)))
-    }
+    };
 
     handleGenderChange = (selectedOption) => {
-        //this.setState({gender: selectedOption})
         this.props.Store.gender = selectedOption;
-    }
-
-    handleBlockChange = (event) => {
-        //this.setState({block: event.target.value })
-        this.props.Store.block = event.target.value;
-    }
+    };
 
     handleSelectChange = (e, { name, value }) => { this.setState({ [name]: value })
-    }
+    };
 
     handleSelectChangeGender = (e, { name, value }) => {
         store.dispatch(senior_search_gender(value));
         this.setState({sex: value});
-    }
-
-    handleSelectChangeBlock = (e, { name, value }) => {
-        store.dispatch(senior_search_block(value));
-        this.setState({blocked: value});
-    }
+    };
 
     render() {
-        const { activeIndex } = this.state
 
         const genderOptions = [
             { key: 'm', text: 'Mężczyzna', value: '1' },
             { key: 'k', text: 'Kobieta', value: '0' },
-          ]
+          ];
 
         const blockOptions = [
             { key: 't', text: 'Zablokowany', value: 1},
             { key: 'n', text: 'Nie zablokowany', value: 0}
-        ]
+        ];
 
 
         return (
@@ -204,7 +79,7 @@ class SearchBar extends React.Component {
                 <Form.Field
                     id='form-input-control-first-name'
                     control={Input}
-                    label='ID Karty:'
+                    label='ID karty:'
                     placeholder='00000000K'
                     onChange = {(e) => {this.setState({card_id: e.target.value})}}
                     value={this.state.card_id}
@@ -212,7 +87,7 @@ class SearchBar extends React.Component {
                 <Form.Field
                     id='form-input-control-first-name'
                     control={Input}
-                    label='Rok Urodzenia:'
+                    label='Rok urodzenia:'
                     placeholder='1901'
                     onChange = {(e) => {this.setState({birth_year: e.target.value})}}
                     value={this.state.birth_year}
@@ -220,7 +95,7 @@ class SearchBar extends React.Component {
                 <Form.Field
                     id='form-input-control-first-name'
                     control={Input}
-                    label='Numer Telefonu:'
+                    label='Numer telefonu:'
                     placeholder='121121121'
                     onChange = {(e) => {this.setState({phone_number: e.target.value})}}
                     value={this.state.phone_number}
@@ -236,73 +111,6 @@ class SearchBar extends React.Component {
                 />
                 </Form.Field>
                 </Form.Group>
-                <Form.Group>
-                <Form.Field
-                    id='form-input-control-first-name'
-                    control={Input}
-                    label='Wyszukaj po dacie utworzenia w zadanym przedziale czasowym:'
-                    placeholder='2018/10/01'
-                    >
-                    <DatePicker
-                        selected={this.state.date_from}
-                        startDate={this.state.date_from}
-                        endDate={this.state.date_to}
-                        onChange={this.handleChangeStart}
-                        value={this.state.date_from}
-                        dateFormat="yyyy-MM-dd"
-                />
-                    <DatePicker
-                        selected={this.state.date_to}
-                        startDate={this.state.date_from}
-                        endDate={this.state.date_to}
-                        onChange={this.handleChangeEnd}
-                        value={this.state.date_to}
-                        dateFormat="yyyy-MM-dd"
-                />
-                </Form.Field>
-                <Form.Field>
-                    <label>Wyświetl tylko:</label>
-                    <Dropdown
-                        selection
-                        name='block'
-                        options={blockOptions}
-                        placeholder='Zablokowanych lub nie'
-                        onChange={this.handleSelectChangeBlock}
-                />
-                </Form.Field>
-                </Form.Group>
-                <Form.Group>
-                <Form.Field control={Checkbox} label={<label>Data utowrzenia rosnąco</label>}
-                    checked={this.props.is_asc_cdate}
-                    onChange={this.toggleChange_is_asc_cdate}
-                    value={this.props.is_asc_cdate}
-                />
-                <Form.Field control={Checkbox} label={<label>Data utworzenia malejąco</label>}
-                    checked={this.props.is_desc_cdate}
-                    onChange={this.toggleChange_is_desc_cdate}
-                    value={this.props.is_asc_cdate}
-                />
-                <Form.Field control={Checkbox} label={<label>ID Karty rosnąco</label>}
-                    checked={this.props.is_asc_cId}
-                    onChange={this.toggleChange_is_asc_cId}
-                    value={this.props.is_asc_cId}
-                />
-                <Form.Field control={Checkbox} label={<label>ID Karty malejąco</label>}
-                    checked={this.props.is_desc_cId}
-                    onChange={this.toggleChange_is_desc_cId}
-                    valye={this.props.is_desc_cId}
-                />
-                <Form.Field control={Checkbox} label={<label>Data urodzenia rosnąco</label>}
-                    checked={this.props.is_asc_byr}
-                    onChange={this.toggleChange_is_asc_byr}
-                    value={this.props.is_asc_byr}
-                />
-                <Form.Field control={Checkbox} label={<label>Data urdzenia malejąco</label>}
-                    checked={this.props.is_desc_byr}
-                    onChange={this.toggleChange_is_desc_byr}
-                    value={this.props.is_desc_byr}
-                />
-                </Form.Group>
                 <Form.Button content='Wyszukaj' type='submit' />
             </Form>
             </div>
@@ -312,20 +120,12 @@ class SearchBar extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        seniorSearch_term: state.seniors.seniorSearch_term,
-        seniorSearch_year: state.seniors.seniorSearch_year,
-        seniorSearch_number: state.seniors.seniorSearch_number,
-        seniorSearch_gender: state.seniors.seniorSearch_gender,
-        seniorSearch_block: state.seniors.seniorSearch_block,
-        seniorSearch_is_asc_cdate: state.seniors.seniorSearch_is_asc_cdate,
-        seniorSearch_is_desc_cdate: state.seniors.seniorSearch_is_desc_cdate,
-        seniorSearch_is_asc_cId: state.seniors.seniorSearch_is_asc_cId,
-        seniorSearch_is_desc_cId: state.seniors.seniorSearch_is_desc_cId,
-        seniorSearch_is_asc_byr: state.seniors.seniorSearch_is_asc_byr,
-        seniorSearch_is_desc_byr: state.seniors.seniorSearch_is_desc_byr,
-        seniorSearch_startDate: state.seniors.seniorSearch_startDate,
-        seniorSearch_endDate: state.seniors.seniorSearch_endDate,
+        seniorSearch_term: state.seniorSearch_term,
+        seniorSearch_year: state.seniorSearch_year,
+        seniorSearch_number: state.seniorSearch_number,
+        seniorSearch_gender: state.seniorSearch_gender,
+        seniorSearch_block: state.seniorSearch_block
     }
-}
+};
 
 export default connect(mapStateToProps)(SearchBar);

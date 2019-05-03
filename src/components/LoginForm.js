@@ -25,9 +25,6 @@ const LoginForm = () => (
             </Button>
           </Segment>
         </Form>
-        <Message>
-          Nie masz konta? <a href='#'>Wyślij zapytanie</a>
-        </Message>
       </Grid.Column>
     </Grid>
   </div>

@@ -1,10 +1,11 @@
 import React from 'react';
 import Moment from 'react-moment';
-import { Icon, Label, Menu, Table } from 'semantic-ui-react';
+import {Table} from 'semantic-ui-react';
+
 class RecordRow extends React.Component {
     render() {
         const { card_id, phone_number, id, pickup_address, pickup_date, pickup_time, destination_address, comments, status, creation_date } = this.props.record;
-        
+
         let showStatus;
         if(status == 1){
             showStatus = 'Zamówione';

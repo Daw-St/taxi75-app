@@ -1,6 +1,7 @@
 import React from 'react';
 import Moment from 'react-moment';
-import { Icon, Label, Menu, Table } from 'semantic-ui-react';
+import {Table} from 'semantic-ui-react';
+
 class RecordRow extends React.Component {
     render() {
         const { card_id, birth_year, blocked, creation_date, phone_number, sex } = this.props.record;
